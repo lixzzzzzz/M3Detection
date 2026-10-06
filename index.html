@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="M3Detection: Multi-Frame Multi-Level Feature Fusion for Multi-Modal 3-D Object Detection With Camera and 4-D Imaging Radar.">
+  <meta property="og:title" content="M3Detection: Multi-Frame Multi-Level Feature Fusion for Multi-Modal 3-D Object Detection With Camera and 4-D Imaging Radar">
+  <meta property="og:description" content="A multi-frame camera–4-D imaging radar 3-D detection framework with multi-level feature aggregation and trajectory-level temporal modeling.">
+  <meta property="og:image" content="https://arxiv.org/html/2510.27166v1/Model_Architecture.png">
+  <title>M3Detection</title>
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
+
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" type="text/css" href="static/css/main.css?v=20261006-8">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+  <script defer src="static/js/main.js"></script>
+</head>
+<body>
+
+<section class="section hero-section">
+  <div class="container is-max-desktop has-text-centered">
+    <h1 class="title is-2 paper-title">
+      <span class="method-name">M<sup>3</sup>Detection</span>: Multi-Frame Multi-Level Feature Fusion<br>
+      for Multi-Modal 3-D Object Detection With<br>
+      Camera and 4-D Imaging Radar
+    </h1>
+    <p class="publisher">IEEE Transactions on Intelligent Transportation Systems, 2026</p>
+
+    <div class="is-size-5 author-line">
+      <span class="authors"><a href="https://lixzzzzzz.github.io/" target="_blank" rel="noopener">Xiaozhi Li</a><sup>1,2</sup>,</span>
+      <span class="authors">Huijun Di<sup>3✉</sup>,</span>
+      <span class="authors">Jian Li<sup>1,2✉</sup>,</span>
+      <span class="authors">Feng Liu<sup>4</sup>,</span>
+      <span class="authors"><a href="https://liangwei-bit.github.io/web/" target="_blank" rel="noopener">Wei Liang</a><sup>3</sup></span>
+    </div>
+
+    <div class="is-size-7 affiliation-block">
+      <span><sup>1</sup>Radar Technology Research Institute, School of Information and Electronics, Beijing Institute of Technology</span>
+      <span><sup>2</sup>Key Laboratory of Electronic and Information Technology in Satellite Navigation, Ministry of Education</span>
+      <span><sup>3</sup>School of Computer Science, Beijing Institute of Technology</span>
+      <span><sup>4</sup>Beijing Racobit Electronic Information Technology Co., Ltd.</span>
+      <span class="corresponding">✉ Corresponding authors</span>
+    </div>
+
+    <div class="links">
+      <span class="link">
+        <a href="https://arxiv.org/abs/2510.27166" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-outlined is-danger">
+          <span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv</span>
+        </a>
+      </span>
+      <span class="link">
+        <a href="https://ieeexplore.ieee.org/document/11540092" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-outlined is-primary">
+          <span class="icon"><i class="fas fa-file-lines"></i></span><span>Paper</span>
+        </a>
+      </span>
+      <span class="link">
+        <a href="https://doi.org/10.1109/TITS.2026.3695618" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-outlined is-info">
+          <span class="icon"><i class="fas fa-link"></i></span><span>DOI</span>
+        </a>
+      </span>
+      <span class="link">
+        <a href="https://github.com/lixzzzzzz/Code-M3"
+           target="_blank"
+           rel="noopener"
+           class="external-link button is-normal is-rounded is-outlined is-dark">
+          <span class="icon"><i class="fab fa-github"></i></span>
+          <span>Code</span>
+        </a>
+      </span>
+    </div>
+
+    <div class="columns is-centered teaser-wrap">
+      <div class="column is-11">
+        <figure class="paper-figure hero-figure">
+          <img src="https://arxiv.org/html/2510.27166v1/Existing_Methods_Comparsion.png" alt="Comparison of multi-frame 3-D detection frameworks and M3Detection" loading="eager">
+        </figure>
+      </div>
+    </div>
+    <p class="tldr has-text-centered">
+      M<sup>3</sup>Detection performs multi-level spatial-temporal fusion directly on intermediate features from a single-frame multi-modal detector, using tracker-generated reference trajectories to improve 3D detection without redundant feature re-extraction.
+    </p>
+  </div>
+</section>
+
+<section class="section custom-section" id="abstract">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Abstract</h2>
+    <div class="has-text-justified abstract-text">
+      <p>
+        Recent advances in 4D imaging radar have enabled robust perception in adverse weather, while camera sensors provide dense semantic information. Fusing these complementary modalities has great potential for accurate and cost-effective 3D perception. However, most existing camera-radar fusion methods are limited to single-frame inputs, capturing only a partial view of the scene. The incomplete scene information, compounded by image degradation and 4D radar sparsity, hinders overall detection performance. In contrast, multi-frame fusion offers richer spatial-temporal information but faces two challenges: achieving robust and effective object feature fusion across frames and modalities, and mitigating the computational cost of redundant feature extraction. Consequently, we propose <strong>M3Detection, a unified multi-frame 3D object detection framework</strong> that performs multi-level feature fusion on multi-modal data from camera and 4D imaging radar. In contrast to conventional architectures, our framework <strong>leverages intermediate features from the baseline detector</strong> and employs the tracker to produce reference trajectories, improving computational efficiency and providing richer information for second-stage. In the second stage, to address tracking uncertainties and enable fine-grained modeling, we design a <strong>global-level inter-object feature aggregation module (GOA)</strong> guided by radar information to align global features across candidate proposals and a <strong>local-level inter-grid feature aggregation module (LGA)</strong> that expands local features along the reference trajectories to enhance fine-grained object representation. The aggregated features are then processed by a <strong>trajectory-level multi-frame spatial-temporal fusion module (MSTF)</strong> to encode cross-frame interactions and enhance temporal representation. Extensive experiments on the View-of-Delft, TJ4DRadSet, and OmniHD-Scenes datasets demonstrate that M3Detection achieves <strong>state-of-the-art 3D detection performance</strong>, validating its effectiveness in multi-frame detection with camera-4D imaging radar fusion.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section custom-section" id="framework">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">Framework</h2>
+    <figure class="paper-figure">
+      <img src="https://arxiv.org/html/2510.27166v1/Model_Architecture.png" alt="Overall architecture of M3Detection" loading="lazy">
+      <figcaption>
+        M<sup>3</sup>Detection is a two-stage camera–4-D radar framework. A single-frame detector produces local and global BEV intermediate features and initial detections; a memory bank and tracker organize historical features into object trajectories; GOA, LGA, and trajectory-level temporal reasoning then refine current-frame predictions.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section custom-section" id="goa">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">Global-Level Inter-Object Feature Aggregation</h2>
+    <figure class="paper-figure compact-figure">
+      <img src="https://arxiv.org/html/2510.27166v1/Globla_Feature_Aggregation.png" alt="Global-level inter-object feature aggregation in M3Detection" loading="lazy">
+      <figcaption>
+        GOA aggregates global BEV features from multiple candidate proposal positions. Radar-aware features, proposal position embeddings, and learnable feature weighting help retain valid object information while suppressing noisy hypotheses caused by imperfect tracking.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section custom-section" id="lga">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">Local-Level Inter-Grid Feature Aggregation</h2>
+    <figure class="paper-figure compact-figure">
+      <img src="https://arxiv.org/html/2510.27166v1/Local_Feature_Aggregation.png" alt="Local-level inter-grid feature aggregation in M3Detection" loading="lazy">
+      <figcaption>
+        LGA expands the local crop around each reference trajectory position and uses the corresponding global feature as a semantic query for cross-level deformable attention, enriching local context and fine-grained geometric representation.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section custom-section" id="temporal">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">Trajectory-Level Multi-Frame Temporal Modeling</h2>
+    <figure class="paper-figure compact-figure">
+      <img src="https://arxiv.org/html/2510.27166v1/Multi_Frame_Spatiotemporal_Reasoning.png" alt="Trajectory-level multi-frame temporal module in M3Detection" loading="lazy">
+      <figcaption>
+        Multi-head attention with temporal encoding models feature interactions along each object trajectory. This helps capture each object's temporal context while reducing interference from other objects.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section custom-section" id="results">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">Experimental Results</h2>
+    <p class="section-note">Results on View-of-Delft (VoD), TJ4DRadSet, and OmniHD-Scenes. Gains are absolute percentage-point improvements over each single-frame baseline.</p>
+
+    <div class="metric-grid">
+      <div class="metric-group">
+        <div class="metric-card">
+          <div class="metric-value">66.81%</div>
+          <div class="metric-label">VoD EAA mAP</div>
+          <div class="metric-delta">+7.85 vs. HGSFusion</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">84.56%</div>
+          <div class="metric-label">VoD RoI mAP</div>
+          <div class="metric-delta">+5.10 vs. HGSFusion</div>
+        </div>
+      </div>
+      <div class="metric-group">
+        <div class="metric-card">
+          <div class="metric-value">44.73%</div>
+          <div class="metric-label">TJ4DRadSet 3D mAP</div>
+          <div class="metric-delta">+7.52 vs. HGSFusion</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">51.22%</div>
+          <div class="metric-label">TJ4DRadSet BEV mAP</div>
+          <div class="metric-delta">+7.99 vs. HGSFusion</div>
+        </div>
+      </div>
+      <div class="metric-group">
+        <div class="metric-card">
+          <div class="metric-value">39.28%</div>
+          <div class="metric-label">OmniHD-Scenes mAP</div>
+          <div class="metric-delta">+4.40 vs. RCFusion</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">46.82%</div>
+          <div class="metric-label">OmniHD-Scenes ODS</div>
+          <div class="metric-delta">+3.82 vs. BEVFusion</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-insights">
+      <p>Compared with RaGS, M<sup>3</sup>Detection raises VoD EAA and RoI mAP by 4.95 and 2.93 points, and TJ4DRadSet 3D mAP by 2.78 points.</p>
+      <p>Across BEVFusion, SFGFusion, and HGSFusion, M<sup>3</sup>Detection improves TJ4DRadSet 3D mAP by 8.13, 7.68, and 7.52 points, respectively. The gains across different baselines show that the framework is not tied to one detector.</p>
+      <p>On TJ4DRadSet, the SFGFusion-based model gains 13.55 points in 3D mAP under dark conditions and 9.68 points for objects 50–70 m away. The gains extend to glare and other distance ranges.</p>
+    </div>
+
+    <h3 class="title is-4 subsection-title">View-of-Delft Qualitative Results</h3>
+    <figure class="paper-figure">
+      <img src="https://arxiv.org/html/2510.27166v1/vod-result-vis.png" alt="Qualitative detection results of M3Detection on View-of-Delft" loading="lazy">
+    </figure>
+
+    <h3 class="title is-4 subsection-title">TJ4DRadSet Qualitative Results</h3>
+    <figure class="paper-figure">
+      <img src="https://arxiv.org/html/2510.27166v1/tj4d-result-vis.png" alt="Qualitative detection results of M3Detection on TJ4DRadSet" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<section class="section custom-section" id="ablation">
+  <div class="container is-max-desktop has-text-centered">
+    <h2 class="title is-3">Ablation Study</h2>
+    <div class="table-wrap">
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>MSTF</th>
+            <th>GOA</th>
+            <th>LGA</th>
+            <th>VoD EAA mAP</th>
+            <th>VoD RoI mAP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>–</td><td>–</td><td>–</td><td>58.96</td><td>79.46</td></tr>
+          <tr><td>✓</td><td>✓</td><td>–</td><td>62.37</td><td>83.15</td></tr>
+          <tr><td>✓</td><td>–</td><td>✓</td><td>63.06</td><td>83.32</td></tr>
+          <tr class="best-row"><td>✓</td><td>✓</td><td>✓</td><td><strong>66.81</strong></td><td><strong>84.56</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption">
+      On VoD, combining the MSTF, GOA, and LGA modules achieves the highest EAA and RoI mAP<br>
+      in the ablation: 66.81% and 84.56%, respectively.
+    </p>
+  </div>
+</section>
+
+<section class="section custom-section" id="citation">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Citation</h2>
+    <div class="bibtex-wrap">
+      <button class="copy-button" id="copyBibtex" aria-label="Copy BibTeX"><i class="far fa-copy"></i> Copy</button>
+      <pre class="bibtex"><code id="bibtexCode">@article{li2026m3detection,
+  title={M3Detection: Multi-Frame Multi-Level Feature Fusion for Multi-Modal 3-D Object Detection With Camera and 4-D Imaging Radar},
+  author={Li, Xiaozhi and Di, Huijun and Li, Jian and Liu, Feng and Liang, Wei},
+  journal={IEEE Transactions on Intelligent Transportation Systems},
+  volume={27},
+  number={9},
+  pages={11612--11628},
+  year={2026},
+  doi={10.1109/TITS.2026.3695618}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container is-max-desktop has-text-centered footer-text">
+    <span>
+      Page design adapted from the same academic project-page template used by the SFGFusion project page.<br>
+      Template attribution: <a href="https://github.com/silverster98/project-page-template" target="_blank" rel="noopener">Silverster98/project-page-template</a>, licensed under
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
